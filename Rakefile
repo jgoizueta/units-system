@@ -5,13 +5,13 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "units-system"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Arithmetic with units of measure}
+    gem.description = %Q{Experimental unit conversion & arithmetic for Ruby 1.9}
+    gem.required_ruby_version = '>= 1.9.1'
     gem.email = "jgoizueta@gmail.com"
     gem.homepage = "http://github.com/jgoizueta/units-system"
     gem.authors = ["Javier Goizueta"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

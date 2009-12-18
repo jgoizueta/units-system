@@ -1,9 +1,112 @@
-= units-system
+= Ruby Units-System
 
-Description goes here.
+Units of measure conversions for Ruby 1.9, using Ruby objects and Ruby syntax rather than text strings.
+
+There are a number of Ruby units libraries, but I don't think they take this approach (I haven't
+done much research, though.)
+
+Currently Ruby 1.9 is required because we use the feature that
+a +module.clas_eval{...}+ block can reference module's contants without qualification.
+To make this apt for Ruby 1.8 we should replace expressions such as +u{W}+ by either
++u{W()}+, +u{self.W}+ (method invocation) or +u{self::W}+ (qualified constant).
+
+Also, note that UTF-8 characters are liberally used in identifiers.
+
+= Usage examples
+
+To work with units a +units+ block can be used. Beware: in it +self+ is changed,
+so outer self methods or instance variables are not accessible, unless usigned to
+local variables.
+
+  require 'units-system'
+
+  Units.units do
+
+    # In the units environment predefined variables are available for all units and they
+    # can b combined arithmetically:
+    x = 3*m/s
+    puts x                           # => 3.0*m/s
+    # Note that SI prefixes (k for kilo, etc.) can be used as part of the unit names:
+    x += 17*km/h
+    puts x                           # => 7.72222222222222*m/s
+    puts x.to(km/h)                  # => 27.8*km/h
+    puts x.magnitude                 # => 7.72222222222222
+
+    # Let's use some unit powers: convert 3 cubic meters to litres:
+    puts (3*m**3).to(l)              # => 3000.0*l
+
+    # Now let's convert som imperial units to SI:
+    puts (100*mi/h).to_si            # => 44.704*m/s
+
+    # Note that in is a Ruby keyword, so to use inches you must use self.in:
+    puts (10*cm).to(self.in)         # => 3.93700787401575*in
+    # ...or use tha alternative nonstandard name +inch+
+    puts (10*cm).to(self.inch)       # => 3.93700787401575*inch
+
+    # Now let's use derived units, e.g. power units:
+    x = 10*kW
+    # show a verbose description of the measure:
+    puts x.describe                  # => 10.0 kiloWatt
+    # convert to base units
+    puts x.base                      # => 10000.0*(m**2*kg)/s**3
+    # a more natural notation can be used instead of the default Ruby syntax:
+    puts x.base.abr                  # => 10000.0 (m^2 kg)/s^3
+
+    # Note that unit names that start with uppercase letters are OK:
+    puts 11*W                        # => 11.0*W
+    puts (2*Mg).to(kg)               # => 2000.0*kg
+
+    # Let's use kilograms-force (kiloponds) (not a SI unit)
+    x = 10*kgf
+    puts x                           # => 10.0*kgf
+    # conversion to SI units uses the SI unit of force the newton N (which is a derived unit)
+    puts x.to_si                     # => 98.0665*N
+    # conversion to base units substitutes derived units for base units
+    puts x.base                      # => 98066.5*(g*m)/s**2
+    # but g (gram) is not a base SI unit, to get SI base units we must:
+    puts x.base.to_si                # => 98.0665*(kg*m)/s**2
+
+    # And now, for some trigonometry fun! (note the use of unicode characters)
+    x = 90*°
+    puts x                           # => 90.0*°
+    puts x.to(rad)                   # => 1.5707963267949*rad
+    puts sin(x)                      # => 1.0
+
+    puts sin(45*°+30*′+10*″)         # => 0.713284429355996
+
+    puts asin(0.5)                   # => 0.523598775598299*rad
+    puts asin(0.5).to(°)             # => 30.0*°
+    puts asin(0.5).in(°)             # => 30.0
+
+    puts atan2(10*cm, 0.1*m).to(°)   # => 45.0*°
+
+    # Temperature conversions may be absolute (convert levels of temperature)
+    # or relative (convert differences of temperature)
+    # When a measure has a single unit of temperature, conversion is absolute:
+    puts (20*°C).to(K)               # => 293.15*K
+    puts (20*°C).to(°F)              # => 67.9999999999999*°F
+    puts (20*mK).to(°C)              # => -273.13*°C
+    # In other cases conversion is relative:
+    puts (2*°C/h).to(K/h)            # => 2.0*K/h
+    puts (2*°C/h).to(°F/h)           # => 3.6*°F/h
+    # To force the relative conversion of a single temperature pass a second argument to to():
+    puts (20*°C).to(K,:relative)     # => 20.0*K
+    puts (20*°C).to(°F,:relative)    # => 36.0*°F
+    puts (20*mK).to(°C,:relative)    # => 0.02*°C
+
+  end
+
+For short expressions, the abbreviation +Units.u+ can be used instead of +Units.units+
+
+  include Units
+  puts u{60*km + 10*mi}              # => 76.09344*km
+  puts u{sin(45*°)}                  # => 0.707106781186547
+  x = u{120*km/h}
+  puts x.to(u{mi/h})                 # => 74.5645430684801*mi/h
+
 
 == Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a
