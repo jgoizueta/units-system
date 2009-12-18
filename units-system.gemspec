@@ -25,7 +25,8 @@ Gem::Specification.new do |s|
      "VERSION",
      "lib/units-system.rb",
      "test/helper.rb",
-     "test/test_units-system.rb"
+     "test/test_units-system.rb",
+     "units-system.gemspec"
   ]
   s.homepage = %q{http://github.com/jgoizueta/units-system}
   s.rdoc_options = ["--charset=UTF-8"]
