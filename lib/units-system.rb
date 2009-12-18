@@ -407,8 +407,8 @@ module Units
       factor_units = args.shift
       u = unit(factor_units)
       dim = u.dim
-      factor *= u.factor
       equivalence = factor*u.decomposition if u.decomposition
+      factor *= u.factor
       bias = args.shift
     else
       # unidad simple definida en función de una expressión
