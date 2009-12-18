@@ -104,6 +104,11 @@ For short expressions, the abbreviation +Units.u+ can be used instead of +Units.
   x = u{120*km/h}
   puts x.to(u{mi/h})                 # => 74.5645430684801*mi/h
 
+New units can be defined with +Units.define+
+
+  Units.define :kph, 1, Units.u{km/h}
+  puts Units.u{270*kph.to(m/s)}      # => 75.0*m/s
+
 
 == Note on Patches/Pull Requests
 
