@@ -48,6 +48,7 @@ class TestUnitsSystem < Test::Unit::TestCase
   should "convert compound units correctly" do
     assert_equal 75, Units.u{(270*km/h).in(m/s)}
     assert_equal 270, Units.u{(75*m/s).in(km/h)}
+    assert_equal Units.u{g*cm/s**2}.magnitude, Units.u{dyn.to(g*cm/s**2)}.magnitude
   end
 
   should "add units correctly" do

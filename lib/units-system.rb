@@ -575,6 +575,7 @@ module Units
   define :ft, 'foot', 0.3048, :m
   # in is a Ruby keyword; to avoid having to use self.in we'll define:
   define :inch, 'inch', 1, :in
+  define :lb, 'pound', 0.45359237, :kg
 
   # declare derived quantities without named units
   si_units :speed, u{m/s}
@@ -630,5 +631,13 @@ module Units
 
   # define :kp, 'kilopond', :force, u{kg*g0} # or define pond?
   define :gf, 'gram-force', :force, u{g*g0} # kilopond kp = kgf
+  define :lbf, 'pound-force', :force, u{lb*g0}
+
+  define :dyn, 'dyne', 10, :µN # u{1*g*cm/s**2}
+  define :galUS, 'U.S. liquid gallon', :volume, u{231*self.in**3}
+  define :galUK, 'Imperial gallon', 4.546092, :l
+  define :hp, 'horsepower', :power, u{550*ft*lbf/s}
+
+  define :psi, 'pounds-force per square inch', :pressure, u{lbf/self.in**2}
 
 end # Units
