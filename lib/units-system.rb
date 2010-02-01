@@ -1,9 +1,9 @@
 # encoding: utf-8
 
-# Ruby 1.9 Units-System experiments.
+# Ruby Units-System experiments.
 
 module Units
-
+  
   class Measure
 
     def initialize(mag=1.0, units={})
@@ -552,6 +552,26 @@ module Units
     end
 
   end
+  
+  
+  # Constant look-up was different in Ruby before 1.9.1
+  # In older Ruby versions, this must be included in any module or class from which units expressions
+  # are to be used in units or u blocks.
+  module UseBlocks
+    if RUBY_VERSION<"1.9"
+      def self.append_features(target)
+        def target.const_missing(name)
+          begin
+            Units.Measure(name)
+          rescue ArgumentError
+            super
+          end
+        end
+      end
+    end
+  end
+    
+  include UseBlocks
 
   # Units definitions
 

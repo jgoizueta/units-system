@@ -1,17 +1,18 @@
 = Ruby Units-System
 
-Units of measure conversions for Ruby 1.9, using Ruby objects and Ruby syntax rather than text strings.
+Units of measure conversions for Ruby, using Ruby objects and Ruby syntax rather than text strings.
 
 There are a number of Ruby units libraries, but I don't think they take this approach (I haven't
 done much research, though.)
 
-Currently Ruby 1.9 is required because we use the feature that
-a <tt>module.clas_eval{...}</tt> block can reference module's contants without qualification.
-To make this apt for Ruby 1.8 we should replace expressions such as <tt>u{W}</tt> by either
-<tt>u{W()}</tt>, <tt>u{self.W}</tt> (method invocation) or <tt>u{self::W}</tt> (qualified constant).
-
-Also, note that UTF-8 characters are liberally used in identifiers.
-
+There's a couple of caveats for using this module from Ruby 1.8:
+* To use unit names that start with uppercase letters, the UseBlocks module must be included in the scope
+  (either global scope or a module or class definitions) where the expressions are goign to be used.
+  Alternatively, expressions such as <tt>u{W}</tt> could be replaced by either
+  <tt>u{W()}</tt>, <tt>u{self.W}</tt> (method invocation) or <tt>u{self::W}</tt> (qualified constant).
+* UTF-8 characters are liberally used in identifiers, so the code must be executed with the <tt>-Ku</tt> 
+  option (or setting <tt>$KCODE='UTF8'</tt> before requiring this library.)
+  
 = Usage examples
 
 To work with units a +units+ block can be used. Beware: in it +self+ is changed,
@@ -19,6 +20,7 @@ so outer self methods or instance variables are not accessible, unless usigned t
 local variables.
 
   require 'units-system'
+  include Units::UseBlocks # not needed for Ruby 1.9
 
   Units.units do
 

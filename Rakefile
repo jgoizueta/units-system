@@ -7,7 +7,6 @@ begin
     gem.name = "units-system"
     gem.summary = %Q{Arithmetic with units of measure}
     gem.description = %Q{Experimental unit conversion & arithmetic for Ruby 1.9}
-    gem.required_ruby_version = '>= 1.9.1'
     gem.email = "jgoizueta@gmail.com"
     gem.homepage = "http://github.com/jgoizueta/units-system"
     gem.authors = ["Javier Goizueta"]
