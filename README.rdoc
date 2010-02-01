@@ -109,6 +109,12 @@ New units can be defined with +Units.define+
   Units.define :kph, 1, Units.u{km/h}
   puts Units.u{270*kph.to(m/s)}      # => 75.0*m/s
 
+== Caveat
+
+Note that Ruby variable definition rules imply that this:
+  m = Units.u{m}
+Results is a nil value (the outter m assignment defines a local m variable even before executing the block, so
+the m in the block refers to that, yet-unassigned, variable and not to the meter unit)
 
 == Note on Patches/Pull Requests
 
