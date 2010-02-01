@@ -14,13 +14,32 @@ There's a couple of caveats for using this module from Ruby 1.8:
   option (or setting <tt>$KCODE='UTF8'</tt> before requiring this library.)
   
 = Usage examples
+  
+== Ruby 1.9
+  
+For use with Ruby 1.9, this gem can be used simply by requiring:
+
+  require 'units-system'
+    
+== Ruby 1.8
+
+This library has been designed for Ruby 1.9; when using it under older versions of Ruby there's
+a couple of precautions to be taken to use it (which can be used with Ruby 1.9 too):
+  
+    $KCODE = 'UTF8'           # avoid errors when parsing the required library under Ruby 1.8
+    require 'units-system'
+    include Units::UseBlocks  # allow access to capitalized unit names from units/u blocks
+
+Depending on you installation you may have to "require 'rubygems' first.
+
+The following examples use UTF-8 code; so they can should be used with a "encoding: utf-8" comment at the
+top of the file for Ruby 1.9, and/or with the ruby command line "-Ku" option for Ruby 1.8.
 
 To work with units a +units+ block can be used. Beware: in it +self+ is changed,
 so outer self methods or instance variables are not accessible, unless usigned to
 local variables.
 
   require 'units-system'
-  include Units::UseBlocks # not needed for Ruby 1.9
 
   Units.units do
 
