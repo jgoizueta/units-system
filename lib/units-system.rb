@@ -396,11 +396,16 @@ module Units
           equivalence = factor*ud.decomposition if ud.decomposition
           factor *= ud.factor
         end
+        # si_unit = (factor==1.0) # to save si_units definitions
       else
         # unidad compuesta
         equivalence = args.shift
         factor = equivalence.to_si.magnitude
         si_unit = (factor==1.0) # TODO: tolerance?
+        if equivalence.units.empty?
+          # adimensional compound dimension... (special case)
+          equivalence = nil
+        end
       end
     elsif args.first.kind_of?(Numeric)
       # unidad definida en función de otra
