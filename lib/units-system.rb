@@ -76,7 +76,8 @@ module Units
           break
         end
       end
-      Measure.new mag, units    end
+      Measure.new mag, units
+    end
 
     # decompose to base units
     def base
@@ -384,7 +385,7 @@ module Units
     if args.first.kind_of?(Symbol)
       dim = args.shift
       if args.first.kind_of?(Numeric)
-        # unidad simple
+        # simple units
         factor = args.shift
         factor_units = args.shift
         if factor_units
@@ -396,19 +397,19 @@ module Units
           equivalence = factor*ud.decomposition if ud.decomposition
           factor *= ud.factor
         end
-        # si_unit = (factor==1.0) # to save si_units definitions
+        # si_unit = (factor==1.0) # to save si_units definitions # TODO: tolerance?
       else
-        # unidad compuesta
+        # compound unit
         equivalence = args.shift
         factor = equivalence.to_si.magnitude
         si_unit = (factor==1.0) # TODO: tolerance?
         if equivalence.units.empty?
-          # adimensional compound dimension... (special case)
+          # dimensionless compound dimension... (special case for angular units)
           equivalence = nil
         end
       end
     elsif args.first.kind_of?(Numeric)
-      # unidad definida en función de otra
+      # unit define in terms of other unit
       factor = args.shift
       factor_units = args.shift
       u = unit(factor_units)
@@ -417,17 +418,18 @@ module Units
       factor *= u.factor
       bias = args.shift
     else
-      # unidad simple definida en función de una expressión
+      # unit defined from a measure expression; the dimension must be already known or defined
+      # here (as as symbol preceding the expression).
       definition = args.shift
-      if definition.units.keys.size!=1
-        raise ArgumentError,"To define a compound unit a dimension must be specified"
-      end
-      dim = definition.units.keys.first
+      dim = definition.dimension
+      raise ArgumentError,"To define a new compound unit a dimension must be specified" unless dim
+      equivalence = definition
       factor = definition.to_si.magnitude
+      # si_unit = (factor==1.0) # to save si_units definitions # TODO: tolerance?
     end
     unit_def = UnitDefinition.new(dim, factor, name, equivalence, bias)
     if UNITS.has_key?(unit_symbol)
-      raise "Se ha intentando redefinir #{unit_symbol} (previamente definido como #{UNITS[unit_symbol]}) como #{unit_def}"
+      raise "Redefinition of #{unit_symbol} as #{unit_def} (previously defined as #{UNITS[unit_symbol]})"
     end
     UNITS[unit_symbol] = unit_def
     System.define unit_symbol
@@ -636,7 +638,7 @@ module Units
   define :°F, 'degree Fahrenheit', 5.0/9.0, :K, +459.67
   define :R, 'rankine', 5.0/9.0, :K
 
-  define :l, 'litre', :volume, u{dm**3}
+  define :l, 'litre', u{dm**3}
   define :L, 'litre', 1, :l
 
   define :°, 'degree', ::Math::PI/180.0, :rad
@@ -647,23 +649,23 @@ module Units
   define :arcmin, 'arc-minute', 1, :′
   define :arcsec, 'arc-second', 1, :″
 
-  define :g0, 'standard gravity', :acceleration, u{9.80665*m/s**2}
+  define :g0, 'standard gravity', u{9.80665*m/s**2}
 
-  define :bar, 'bar', :pressure, u{1E5*Pa}
-  define :atm, 'atmosphere',  :pressure, u{101325.0*Pa}
-  define :mWC, 'meters of water column', :pressure, u{1E3*kg*g0/m**2}
-  define :Torr, 'torricelli', :pressure, u{atm/760}
-  define :mHg, 'mHg', :pressure, u{13.5951E3*kg*g0/m**2}
+  define :bar, 'bar', 1E5, :Pa
+  define :atm, 'atmosphere',  101325.0, :Pa
+  define :mWC, 'meters of water column', u{1E3*kg*g0/m**2}
+  define :Torr, 'torricelli', u{atm/760}
+  define :mHg, 'mHg', u{13.5951E3*kg*g0/m**2}
 
   # define :kp, 'kilopond', :force, u{kg*g0} # or define pond?
-  define :gf, 'gram-force', :force, u{g*g0} # kilopond kp = kgf
-  define :lbf, 'pound-force', :force, u{lb*g0}
+  define :gf, 'gram-force', u{g*g0} # kilopond kp = kgf
+  define :lbf, 'pound-force', u{lb*g0}
 
   define :dyn, 'dyne', 10, :µN # u{1*g*cm/s**2}
-  define :galUS, 'U.S. liquid gallon', :volume, u{231*self.in**3}
+  define :galUS, 'U.S. liquid gallon', u{231*self.in**3}
   define :galUK, 'Imperial gallon', 4.546092, :l
-  define :hp, 'horsepower', :power, u{550*ft*lbf/s}
+  define :hp, 'horsepower', u{550*ft*lbf/s}
 
-  define :psi, 'pounds-force per square inch', :pressure, u{lbf/self.in**2}
+  define :psi, 'pounds-force per square inch', u{lbf/self.in**2}
 
 end # Units
