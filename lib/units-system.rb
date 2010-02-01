@@ -349,8 +349,9 @@ module Units
           prefix = prefix.to_s
           if u[0...prefix.length] == prefix
             factor = f
-            ud = UNITS[u[prefix.length..-1].to_sym].dup
-            if ud
+            ud = UNITS[u[prefix.length..-1].to_sym]
+            if ud              
+              ud = ud.dup
               ud.name = "#{name}#{ud.name}"
               break
             end
