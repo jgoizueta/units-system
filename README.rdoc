@@ -6,9 +6,9 @@ There are a number of Ruby units libraries, but I don't think they take this app
 done much research, though.)
 
 Currently Ruby 1.9 is required because we use the feature that
-a +module.clas_eval{...}+ block can reference module's contants without qualification.
-To make this apt for Ruby 1.8 we should replace expressions such as +u{W}+ by either
-+u{W()}+, +u{self.W}+ (method invocation) or +u{self::W}+ (qualified constant).
+a <tt>module.clas_eval{...}</tt> block can reference module's contants without qualification.
+To make this apt for Ruby 1.8 we should replace expressions such as <tt>u{W}</tt> by either
+<tt>u{W()}</tt>, <tt>u{self.W}</tt> (method invocation) or <tt>u{self::W}</tt> (qualified constant).
 
 Also, note that UTF-8 characters are liberally used in identifiers.
 
