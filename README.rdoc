@@ -59,10 +59,10 @@ local variables.
     # Now let's convert som imperial units to SI:
     puts (100*mi/h).to_si            # => 44.704*m/s
 
-    # Note that in is a Ruby keyword, so to use inches you must use self.in:
+    # Note that +in+ is a Ruby keyword, so to use inches you must use +self.in+:
     puts (10*cm).to(self.in)         # => 3.93700787401575*in
     # ...or use tha alternative nonstandard name +inch+
-    puts (10*cm).to(self.inch)       # => 3.93700787401575*inch
+    puts (10*cm).to(inch)            # => 3.93700787401575*inch
 
     # Now let's use derived units, e.g. power units:
     x = 10*kW
