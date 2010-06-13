@@ -10,7 +10,7 @@ begin
     gem.email = "jgoizueta@gmail.com"
     gem.homepage = "http://github.com/jgoizueta/units-system"
     gem.authors = ["Javier Goizueta"]
-    gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
+    gem.add_development_dependency "shoulda"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
