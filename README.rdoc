@@ -10,22 +10,22 @@ There's a couple of caveats for using this module from Ruby 1.8:
   (either global scope or a module or class definitions) where the expressions are goign to be used.
   Alternatively, expressions such as <tt>u{W}</tt> could be replaced by either
   <tt>u{W()}</tt>, <tt>u{self.W}</tt> (method invocation) or <tt>u{self::W}</tt> (qualified constant).
-* UTF-8 characters are liberally used in identifiers, so the code must be executed with the <tt>-Ku</tt> 
+* UTF-8 characters are liberally used in identifiers, so the code must be executed with the <tt>-Ku</tt>
   option (or setting <tt>$KCODE='UTF8'</tt> before requiring this library.)
-  
+
 = Usage examples
-  
+
 == Ruby 1.9
-  
+
 For use with Ruby 1.9, this gem can be used simply by requiring:
 
   require 'units-system'
-    
+
 == Ruby 1.8
 
 This library has been designed for Ruby 1.9; when using it under older versions of Ruby there's
 a couple of precautions to be taken to use it (which can be used with Ruby 1.9 too):
-  
+
     $KCODE = 'UTF8'           # avoid errors when parsing the required library under Ruby 1.8
     require 'units-system'
     include Units::UseBlocks  # allow access to capitalized unit names from units/u blocks
@@ -36,7 +36,7 @@ The following examples use UTF-8 code; so they can should be used with a "encodi
 top of the file for Ruby 1.9, and/or with the ruby command line "-Ku" option for Ruby 1.8.
 
 To work with units a +units+ block can be used. Beware: in it +self+ is changed,
-so outer self methods or instance variables are not accessible, unless usigned to
+so outer self methods or instance variables are not accessible, unless assigned to
 local variables.
 
   require 'units-system'
@@ -44,7 +44,7 @@ local variables.
   Units.units do
 
     # In the units environment predefined variables are available for all units and they
-    # can b combined arithmetically:
+    # can be combined arithmetically:
     x = 3*m/s
     puts x                           # => 3.0*m/s
     # Note that SI prefixes (k for kilo, etc.) can be used as part of the unit names:
@@ -56,12 +56,12 @@ local variables.
     # Let's use some unit powers: convert 3 cubic meters to litres:
     puts (3*m**3).to(l)              # => 3000.0*l
 
-    # Now let's convert som imperial units to SI:
+    # Now let's convert some imperial units to SI:
     puts (100*mi/h).to_si            # => 44.704*m/s
 
     # Note that +in+ is a Ruby keyword, so to use inches you must use +self.in+:
     puts (10*cm).to(self.in)         # => 3.93700787401575*in
-    # ...or use tha alternative nonstandard name +inch+
+    # ...or use the alternative nonstandard name +inch+
     puts (10*cm).to(inch)            # => 3.93700787401575*inch
 
     # Now let's use derived units, e.g. power units:
@@ -134,7 +134,7 @@ New units can be defined with +Units.define+
 
 Note that Ruby variable definition rules imply that this:
   m = Units.u{m}
-Results is a nil value (the outter m assignment defines a local m variable even before executing the block, so
+Results is a nil value (the outer m assignment defines a local m variable even before executing the block, so
 the m in the block refers to that, yet-unassigned, variable and not to the meter unit)
 
 == Note on Patches/Pull Requests
