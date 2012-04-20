@@ -139,6 +139,9 @@ Text strings can also be used to define units:
   x = Units.u('120*km/h')
   puts x.to(Units.u('mi/h'))         # => 74.5645430684801*mi/h
 
+And also as the right operand of binary arithmetic operators:
+
+  puts Units.u('20*km')/'h'          # => 20.0*km/h
 
 New units can be defined with +Units.define+
 
