@@ -71,4 +71,17 @@ class TestUnitsSystem < Test::Unit::TestCase
     assert_raise(RuntimeError){Units.units{(m/s).to(m/s**2)}}
   end
 
+  should "admit units defined as text string" do
+    assert_equal Units::Measure, Units.units('m').class
+    assert_equal 1.0, Units.units('m').magnitude
+    assert_equal [:m, 1], Units.units('m').units[:length]
+    assert_equal :speed, Units.u('m/s').dimension
+    #assert_equal Units.u{m}, Units.u("m")
+    assert_equal 5, Units.u("3*m+2*m").magnitude
+    #assert_equal Units.u{3*m+2*m}, Units.u("3*m+2*m")
+    assert_equal 5, Units.units("3*m+2*m").magnitude
+    #assert_equal Units.u{3*m+2*m}, Units.units("3*m+2*m")
+    assert_raise(ArgumentError){Units.u("m"){m}}
+  end
+
 end

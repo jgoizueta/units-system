@@ -327,8 +327,16 @@ module Units
 
   end # Units::System
 
-  def units(&blk)
-    Units::System.class_eval(&blk)
+  def units(string=nil, &blk)
+    if string
+      if blk
+        raise ArgumentError, "wrong number of arguments (1 for 0)"
+      else
+        Units::System.class_eval(string)
+      end
+    else
+      Units::System.class_eval(&blk)
+    end
   end
   alias :u :units
   module_function :units, :u
