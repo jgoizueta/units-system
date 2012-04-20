@@ -71,10 +71,22 @@ class TestUnitsSystem < Test::Unit::TestCase
     assert_raise(RuntimeError){Units.units{(m/s).to(m/s**2)}}
   end
 
-  should "define measures with bracket constructors" do
+  should "define measures with bracket constructor" do
     assert_equal Units::Measure, Units::Measure[1.0, :m].class
     assert_equal 1.0, Units::Measure[1.0, :m].magnitude
     assert_equal [:m, 1], Units::Measure[1.0, :m].units[:length]
+  end
+
+  should "be flexible with constructor arguments" do
+    assert_equal Units::Measure[1.0, :m], Units::Measure[:m]
+    assert_equal Units::Measure[2.0, {}], Units::Measure[2.0]
+    assert_equal Units::Measure[1.0, {}], Units::Measure[]
+  end
+
+  should "define measures with method constructor" do
+    assert_equal Units::Measure, Units.Measure(1.0, :m).class
+    assert_equal 1.0, Units.Measure(1.0, :m).magnitude
+    assert_equal [:m, 1], Units.Measure(1.0, :m).units[:length]
   end
 
   should "compare measure objects" do

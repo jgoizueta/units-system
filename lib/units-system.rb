@@ -8,7 +8,25 @@ module Units
 
   class Measure
 
-    def initialize(mag=1.0, units={})
+    def initialize(*args)
+      if args.size==0
+        mag = 1.0
+        units = {}
+      elsif args.size==1
+        case args.first
+        when Numeric
+          mag = args.first
+          units = {}
+        else
+          mag = 1.0
+          units = args.first
+        end
+      elsif args.size==2
+        mag, units = args
+      else
+        raise ArgumentError, "wrong number of arguments (#{args.size} for 0, 1 or 2)"
+      end
+
       @magnitude = mag # rename to value?
       case units
       when Symbol
@@ -242,18 +260,7 @@ module Units
   end # Measure
 
   def Measure(*args)
-    if args.size==1
-      case args.first
-      when Numeric
-        m = args.first
-        u = {}
-      else
-        m = 1.0
-        u = args.first
-      end
-      args = [m,u]
-    end
-    Units::Measure.new(*args)
+    Measure[*args]
   end
   module_function :Measure
 
