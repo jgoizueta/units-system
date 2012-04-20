@@ -1,7 +1,7 @@
 require 'helper'
 
 class TestUnitsSystem < Test::Unit::TestCase
-  
+
   include Units::UseBlocks
 
   should "be possible to define Measures with a units block" do

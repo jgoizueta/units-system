@@ -3,7 +3,7 @@
 # Ruby Units-System experiments.
 
 module Units
-  
+
   class Measure
 
     def initialize(mag=1.0, units={})
@@ -351,7 +351,7 @@ module Units
           if u[0...prefix.length] == prefix
             factor = f
             ud = UNITS[u[prefix.length..-1].to_sym]
-            if ud              
+            if ud
               ud = ud.dup
               ud.name = "#{name}#{ud.name}"
               break
@@ -554,8 +554,8 @@ module Units
     end
 
   end
-  
-  
+
+
   # This must be included in any module or class from which units expressions
   # are to be used in units or u blocks.
   # It is not needed in Ruby 1.9.1 due to they way constant loop-up is done in that version,
@@ -571,7 +571,7 @@ module Units
       end
     end
   end
-    
+
   include UseBlocks
 
   # Units definitions
