@@ -123,4 +123,10 @@ class TestUnitsSystem < Test::Unit::TestCase
     assert_nothing_raised{Units.units{3*A}}
   end
 
+  should "render valid code when inspecting measures" do
+    assert_equal Units.u{m}, eval(Units.u{m}.inspect)
+    assert_equal Units.u{3*m/s}, eval(Units.u{3*m/s}.inspect)
+    assert_equal Units.u{3*m/s+2*km/h}, eval(Units.u{3*m/s+2*km/h}.inspect)
+  end
+
 end

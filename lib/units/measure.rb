@@ -122,7 +122,7 @@ module Units
     end
 
     def inspect
-      "Measure(#{@magnitude.inspect}, #{@units.inspect})"
+      "Units::Measure[#{@magnitude.inspect}, #{@units.inspect}]"
     end
 
     def *(other)
