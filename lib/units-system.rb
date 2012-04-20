@@ -10,7 +10,7 @@ module Units
 
   # This must be included in any module or class from which units expressions
   # are to be used in units or u blocks.
-  # It is not needed in Ruby 1.9.1 due to they way constant loop-up is done in that version,
+  # It is not needed in Ruby 1.9.1 due to they way constant look-up is done in that version,
   # but Ruby 1.9.2 has changed that an requires this again.
   module UseBlocks
     def self.append_features(target)
