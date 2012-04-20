@@ -71,16 +71,36 @@ class TestUnitsSystem < Test::Unit::TestCase
     assert_raise(RuntimeError){Units.units{(m/s).to(m/s**2)}}
   end
 
+  should "define measures with bracket constructors" do
+    assert_equal Units::Measure, Units::Measure[1.0, :m].class
+    assert_equal 1.0, Units::Measure[1.0, :m].magnitude
+    assert_equal [:m, 1], Units::Measure[1.0, :m].units[:length]
+  end
+
+  should "compare measure objects" do
+    assert_equal Units::Measure[1.0, :m], Units::Measure[1.0, :m]
+    assert_not_equal Units::Measure[1.0, :m], Units::Measure[2.0, :m]
+    assert_not_equal Units::Measure[1.0, :m], Units::Measure[1.0, :s]
+    assert_equal Units.u{m}, Units::Measure[1.0, :m]
+    assert_not_equal Units.u{m}, Units.u{s}
+    assert_not_equal Units.u{2*m}, Units.u{3*m}
+    assert_equal Units.u{2*m}, Units.u{2*m}
+    assert_equal Units.u{2*m/s}, Units.u{2*m/s}
+    assert_not_equal Units.u{2*m/s}, Units.u{2*m/h}
+    assert_not_equal Units.u{2*m/s}, Units.u{2*m/kg}
+    assert_not_equal Units.u{2*m/s}, Units.u{3*m/s}
+  end
+
   should "admit units defined as text string" do
     assert_equal Units::Measure, Units.units('m').class
     assert_equal 1.0, Units.units('m').magnitude
     assert_equal [:m, 1], Units.units('m').units[:length]
     assert_equal :speed, Units.u('m/s').dimension
-    #assert_equal Units.u{m}, Units.u("m")
+    assert_equal Units.u{m}, Units.u("m")
     assert_equal 5, Units.u("3*m+2*m").magnitude
-    #assert_equal Units.u{3*m+2*m}, Units.u("3*m+2*m")
+    assert_equal Units.u{3*m+2*m}, Units.u("3*m+2*m")
     assert_equal 5, Units.units("3*m+2*m").magnitude
-    #assert_equal Units.u{3*m+2*m}, Units.units("3*m+2*m")
+    assert_equal Units.u{3*m+2*m}, Units.units("3*m+2*m")
     assert_raise(ArgumentError){Units.u("m"){m}}
   end
 

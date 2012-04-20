@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'modalsupport'
+
 # Ruby Units-System experiments.
 
 module Units
@@ -28,6 +30,9 @@ module Units
         @units = units
       end
     end
+
+    include ModalSupport::StateEquivalent
+    include ModalSupport::BracketConstructor
 
     attr_reader :magnitude, :units
 
