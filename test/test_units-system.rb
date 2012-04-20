@@ -116,4 +116,11 @@ class TestUnitsSystem < Test::Unit::TestCase
     assert_raise(ArgumentError){Units.u("m"){m}}
   end
 
+  should "handle well capitalized units names" do
+    assert_nothing_raised{Units.units{W}}
+    assert_nothing_raised{Units.units{3*W}}
+    assert_nothing_raised{Units.units{3*N}}
+    assert_nothing_raised{Units.units{3*A}}
+  end
+
 end
