@@ -10,6 +10,8 @@ There's a couple of caveats for using this module from Ruby 1.8:
   (either global scope or a module or class definitions) where the expressions are goign to be used.
   Alternatively, expressions such as <tt>u{W}</tt> could be replaced by either
   <tt>u{W()}</tt>, <tt>u{self.W}</tt> (method invocation) or <tt>u{self::W}</tt> (qualified constant).
+  Units defined in text form, such as <tt>u('W*h')</tt> will work regardless of whether UseBlocks is
+  included or not.
 * UTF-8 characters are liberally used in identifiers, so the code must be executed with the <tt>-Ku</tt>
   option (or setting <tt>$KCODE='UTF8'</tt> before requiring this library.)
 
@@ -20,6 +22,10 @@ There's a couple of caveats for using this module from Ruby 1.8:
 For use with Ruby 1.9, this gem can be used simply by requiring:
 
   require 'units-system'
+
+For versions other than 1.9.1 this is needed as in Ruby 1.8:
+
+  include Units::UseBlocks  # allow access to capitalized unit names from units/u blocks
 
 == Ruby 1.8
 
@@ -74,6 +80,7 @@ local variables.
     puts x.base.abr                  # => 10000.0 (m^2 kg)/s^3
 
     # Note that unit names that start with uppercase letters are OK:
+    # (but see the notes on UseBlocks above if this doesn't work)
     puts 11*W                        # => 11.0*W
     puts (2*Mg).to(kg)               # => 2000.0*kg
 
@@ -124,6 +131,14 @@ For short expressions, the abbreviation +Units.u+ can be used instead of +Units.
   puts u{sin(45*°)}                  # => 0.707106781186547
   x = u{120*km/h}
   puts x.to(u{mi/h})                 # => 74.5645430684801*mi/h
+
+Text strings can also be used to define units:
+
+  puts Units.u('60*km + 10*mi')      # => 76.09344*km
+  puts Units.u('sin(45*°)')          # => 0.707106781186547
+  x = Units.u('120*km/h')
+  puts x.to(Units.u('mi/h'))         # => 74.5645430684801*mi/h
+
 
 New units can be defined with +Units.define+
 
