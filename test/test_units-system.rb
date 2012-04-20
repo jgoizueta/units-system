@@ -142,4 +142,12 @@ class TestUnitsSystem < Test::Unit::TestCase
     assert_equal Units.u{m-km}, Units.u{m}-'km'
   end
 
+  should "represent abbreviated units" do
+    assert_equal "1.0 m", Units.u{m}.abr
+    assert_equal "3.0 m", Units.u{3*m}.abr
+    assert_equal "3.0 m/s", Units.u{3*m/s}.abr
+    assert_equal "3.5555555555555554 m/s", Units.u{3*m/s + 2*km/h}.abr
+    assert_equal "1,5 m/s", Units.units{3*m/(2*s)}.abr{|v| v.to_s.tr('.',',') }
+  end
+
 end

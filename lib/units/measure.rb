@@ -65,8 +65,17 @@ module Units
     end
 
     # more natural concise text representation
+    # If a block is passed, it is used to format the numeric magnitudes (Float numbers) (e.g., for localization)
+    #   Units.units{3*m/(2*s)}.abr{|v| v.to_s.tr('.',',') } # => "1,5 m/s"
     def abr
-      self.to_s.gsub('**','^').tr('*',' ')
+      txt = self.to_s.gsub('**','^').tr('*',' ')
+      if block_given?
+        txt.gsub!(/[+-]?((\d+_?)*\d+(\.(\d+_?)*\d+)?|\.(\d+_?)*\d+)([eE][+-]?(\d+_?)*\d+)?/) do
+          v = $&.to_f
+          yield v
+        end
+      end
+      txt
     end
 
     # decompose compound units
