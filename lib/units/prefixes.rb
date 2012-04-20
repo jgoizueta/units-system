@@ -9,7 +9,8 @@ module Units
     :f=>[1E-15, 'femto'],
     :p=>[1E-12, 'pico'],
     :n=>[1E-09, 'nano'],
-    :"\302\265"=>[1E-06, 'micro'], # ASCII alternative: u; define it?
+    :"\302\265"=>[1E-06, 'micro'],
+    :"u"=>[1E-06, 'micro'],
     :m=>[1E-03, 'milli'],
     :c=>[1E-02, 'centi'],
     :d=>[1E-01, 'deci'],
