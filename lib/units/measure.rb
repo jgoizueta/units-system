@@ -118,6 +118,7 @@ module Units
     end
 
     def /(other)
+      other = Units.units(other) if other.kind_of?(String)
       self * (other.kind_of?(Numeric) ? 1.0/other : other.inverse)
     end
 
@@ -126,6 +127,7 @@ module Units
     end
 
     def *(other)
+      other = Units.units(other) if other.kind_of?(String)
       case other
       when Numeric
         mag = self.magnitude*other
@@ -147,10 +149,12 @@ module Units
     end
 
     def +(other)
+      other = Units.units(other) if other.kind_of?(String)
       Measure.new self.magnitude+other.to(self.units).magnitude, self.units
     end
 
     def -(other)
+      other = Units.units(other) if other.kind_of?(String)
       self + (-other)
     end
 
@@ -177,6 +181,7 @@ module Units
     end
 
     def in(other, mode=:absolute)
+      other = Units.units(other) if other.kind_of?(String)
       other = Measure.new(1.0, other) unless other.kind_of?(Measure)
       other = other.base
       this = self.base
@@ -199,6 +204,7 @@ module Units
     end
 
     def to(units, mode=:absolute)
+      units = Units.units(units) if units.kind_of?(String)
       units = units.u if units.kind_of?(Measure)
       Measure.new self.in(units, mode), units
     end
@@ -223,7 +229,8 @@ module Units
     end
 
     def coerce(other)
-      [Measure.new(other, {}), self]
+      # other = Units.units(other) if other.kind_of?(String)
+      [Measure[other], self]
     end
 
     def u # dimension? unit? only_units? strip_units? units_measure?

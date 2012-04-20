@@ -116,6 +116,12 @@ class TestUnitsSystem < Test::Unit::TestCase
     assert_raise(ArgumentError){Units.u("m"){m}}
   end
 
+  should "admit units defined as text for conversion arguments" do
+    assert_equal 75, Units.u{(270*km/h)}.in('m/s')
+    assert_equal 270, Units.u{(75*m/s)}.in('km/h')
+    assert_in_delta Units.u{g*cm/s**2}.magnitude, Units.u{dyn}.to('g*cm/s**2').magnitude, Float::EPSILON
+  end
+
   should "handle well capitalized units names" do
     assert_nothing_raised{Units.units{W}}
     assert_nothing_raised{Units.units{3*W}}
@@ -127,6 +133,13 @@ class TestUnitsSystem < Test::Unit::TestCase
     assert_equal Units.u{m}, eval(Units.u{m}.inspect)
     assert_equal Units.u{3*m/s}, eval(Units.u{3*m/s}.inspect)
     assert_equal Units.u{3*m/s+2*km/h}, eval(Units.u{3*m/s+2*km/h}.inspect)
+  end
+
+  should "allow arithmetic between measures and text" do
+    assert_equal Units.u{m/s}, Units.u{m}/'s'
+    assert_equal Units.u{m*s}, Units.u{m}*'s'
+    assert_equal Units.u{m+km}, Units.u{m}+'km'
+    assert_equal Units.u{m-km}, Units.u{m}-'km'
   end
 
 end
