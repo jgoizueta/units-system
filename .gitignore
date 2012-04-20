@@ -1,3 +1,20 @@
+## PROJECT::GENERAL
+
+# rdoc generated
+rdoc
+
+# yard generated
+doc
+.yardoc
+
+# bundler
+.bundle
+
+# jeweler generated
+pkg
+
+## PROJECT::SPECIFIC
+
 ## MAC OS
 .DS_Store
 
@@ -13,9 +30,5 @@ tmtags
 ## VIM
 *.swp
 
-## PROJECT::GENERAL
-coverage
-rdoc
-pkg
-
-## PROJECT::SPECIFIC
+# For rubinius:
+*.rbc
