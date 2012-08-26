@@ -58,10 +58,14 @@ module Units
     end
 
     # more verbose description (not grammatically perfect)
+    # If a block is passed, it is used to format the numeric magnitudes (Float numbers) (e.g., for localization)
+    #   Units.units{3*m/(2*s)}.abr{|v| v.to_s.tr('.',',') } # => "1,5 meter per second"
     def describe
       return @magnitude.to_s if magnitude?
       u_descr = Units.units_descr(@units, true)
-      "#{@magnitude} #{u_descr}"
+      m = @magnitude
+      m = yield(m) if block_given?
+      "#{m} #{u_descr}"
     end
 
     # more natural concise text representation
