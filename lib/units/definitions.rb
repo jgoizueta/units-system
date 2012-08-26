@@ -46,6 +46,7 @@ module Units
   define :sr,  'steradian', :solid_angle,          u{m**2/m**2}
   define :lm,  'lumen',     :luminous_flux,        u{cd*sr}
   define :lx,  'lux',       :illuminance,          u{lm/m**2}
+  define :nt,  'nit',       :luminance,            u{cd/m**2}
   define :Bq,  'bequerel',  :radioactivity,        u{1/s}
   define :Gy,  'gray',      :absorbed_dose,        u{J/kg}
   define :Sv,  'sievert',   :equivalent_dose,      u{J/kg}
