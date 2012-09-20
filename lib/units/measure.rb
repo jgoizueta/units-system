@@ -174,7 +174,7 @@ module Units
       units.each_pair do |dim, (u, m)|
         units[dim] = [u, m*n]
       end
-      Measure.new @magnitude, units
+      Measure.new @magnitude**n, units
     end
 
     def inverse
