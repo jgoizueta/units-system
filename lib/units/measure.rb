@@ -91,7 +91,7 @@ module Units
             compound = true
             mag *= ud.decomposition.magnitude
             ud.decomposition.units.each_pair do |d, (u,m)|
-              mag *= self.class.combine(units, d, u, m)
+              mag *= self.class.combine(units, d, u, m*mul)
             end
           else
             mag *= self.class.combine(units, dim, unit, mul)
