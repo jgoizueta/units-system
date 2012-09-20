@@ -123,6 +123,7 @@ module Units
       else
         units[dim] = [unit, mult]
       end
+      units.delete dim if units[dim].last == 0
       factor
     end
 
