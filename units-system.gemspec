@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "units-system"
-  s.version = "0.2.5"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Javier Goizueta"]
-  s.date = "2012-09-20"
+  s.date = "2012-09-27"
   s.description = "Experimental unit conversion & arithmetic for Ruby 1.9"
   s.email = "jgoizueta@gmail.com"
   s.extra_rdoc_files = [
@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
     "lib/units/prefixes.rb",
     "lib/units/system.rb",
     "test/helper.rb",
+    "test/test_constants.rb",
     "test/test_units-system.rb",
     "units-system.gemspec"
   ]
