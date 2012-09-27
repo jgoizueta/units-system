@@ -17,8 +17,13 @@ module Units
     def self.append_features(target)
       def target.const_missing(name)
         begin
-          result = @@constants[name.to_sym] if @@constants
-          result || Units.Measure(name)
+          name = name.to_sym
+          if name==:Const
+            Units::Const
+          else
+            result = @@constants[name] if @@constants
+            result || Units.Measure(name)
+          end
         rescue ArgumentError
           super
         end
