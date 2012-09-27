@@ -171,9 +171,9 @@ would not be able to use it in the block.
   puts Units.with_constants(:c){1*GeV/c**2}.to(:kg)             # => 1.782661844855044e-27*kg
   # Planck units
   Units.with_constants :c, :G, :hbar do
-    puts sqrt(hbar*G/c**3)                                      # => 1.616097541390724e-35*m
-    puts sqrt(hbar*c/G)                                         # => 2.1766462380769546e-08*kg
-    puts sqrt(hbar*G/c**5)                                      # => 5.390721141459549e-44*s
+    puts sqrt(hbar*G/c**3)                                      # => 1.6161992557033346e-35*m
+    puts sqrt(hbar*c/G)                                         # => 2.176509252445312e-08*kg
+    puts sqrt(hbar*G/c**5)                                      # => 5.391060423886096e-44*s
   end
 
 == Caveat
