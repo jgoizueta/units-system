@@ -78,17 +78,17 @@ module Units
   define :arcmin, 'arc-minute', 1, :′
   define :arcsec, 'arc-second', 1, :″
 
-  define :g0, 'standard gravity', u{9.80665*m/s**2}
+  constant :g0, 'standard gravity', u{9.80665*m/s**2}
 
   define :bar,  'bar',                    1E5, :Pa
   define :atm,  'atmosphere',             101325.0, :Pa
-  define :mWC,  'meters of water column', u{1E3*kg*g0/m**2}
+  define :mWC,  'meters of water column', with_constants(:g0){1E3*kg*g0/m**2}
   define :Torr, 'torricelli',             u{atm/760}
-  define :mHg,  'mHg',                    u{13.5951E3*kg*g0/m**2}
+  define :mHg,  'mHg',                    with_constants(:g0){13.5951E3*kg*g0/m**2}
 
   # define :kp, 'kilopond', :force, u{kg*g0} # or define pond?
-  define :gf,  'gram-force',  u{g*g0} # kilopond kp = kgf
-  define :lbf, 'pound-force', u{lb*g0}
+  define :gf,  'gram-force',  with_constants(:g0){g*g0} # kilopond kp = kgf
+  define :lbf, 'pound-force', with_constants(:g0){lb*g0}
 
   define :dyn,   'dyne', 10, :µN # u{1*g*cm/s**2}
   define :galUS, 'U.S. liquid gallon', u{231*self.in**3}
@@ -96,5 +96,14 @@ module Units
   define :hp,    'horsepower', u{550*ft*lbf/s}
 
   define :psi, 'pounds-force per square inch', u{lbf/self.in**2}
+
+  constant :pi, 'Pi', ::Math::PI
+  constant :c, 'speed of light',  u{ 299792458*m/s }
+  constant :G, 'gravitational constant', u{ 6.67300E-11*m**3/kg/s**2 }
+  constant :h, 'Planck constant', u{ 6.62606957E-34*J*s }
+  constant :hbar, 'Dirac constant', u{Const.h/(2*Const.pi)}
+  constant :electron_charge, 'electron\'s charge', u{1.602176565E-19*C}
+
+  define :eV,  'electron volt', u{Const.electron_charge*V}
 
 end # Units

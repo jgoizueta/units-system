@@ -148,6 +148,34 @@ New units can be defined with +Units.define+
   Units.define :kph, 1, Units.u{km/h}
   puts Units.u{270*kph.to(m/s)}      # => 75.0*m/s
 
+=== Constants
+
+Constants could be define practically as units, but to avoid introducing too much
+noise in the units namespace, they can be defined separately with:
+
+  Units.constant :g, 'standard gravity', u{9.80665*m/s**2}
+
+A constant can be used anywhere with the Units::Const prefix:
+
+  puts Units::Const.g                # => 9.80665*m/s**2
+  # gram-force:
+  puts u{g*Const.g}                  # => 9.80665*(g*m)/s**2
+
+To avoid using the prefix, constants to be used unprefixed can be declared with a +with_constants+;
+Note in the first example, that by introducing a constant named +g+ we're hiding the gram units and
+would not be able to use it in the block.
+
+  # kilopond:
+  puts Units.with_constants(:g){kg*g} # => 9.80665*(kg*m)/s**2
+  # 1 GeV mass
+  puts Units.with_constants(:c){1*GeV/c**2}.to(:kg)             # => 1.782661844855044e-27*kg
+  # Planck units
+  Units.with_constants :c, :G, :hbar do
+    puts sqrt(hbar*G/c**3)                                      # => 1.616097541390724e-35*m
+    puts sqrt(hbar*c/G)                                         # => 2.1766462380769546e-08*kg
+    puts sqrt(hbar*G/c**5)                                      # => 5.390721141459549e-44*s
+  end
+
 == Caveat
 
 Note that Ruby variable definition rules imply that this:

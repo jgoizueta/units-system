@@ -44,6 +44,32 @@ module Units
       Units.u{::Math.atan2(x,y)*rad}
     end
 
+    def sqrt(x)
+      if x.kind_of?(Measure)
+        if x.units.empty?
+          Measure[::Math.sqrt(x.magnitude)]
+        else
+          y = x
+          all_even = x.units.values.map{|v| v.last % 2}.uniq == [0]
+          unless all_even
+            x = x.base
+            all_even = x.units.values.map{|v| v.last % 2}.uniq == [0]
+          end
+          if all_even
+            units = {}
+            x.units.each do |dim, (unit, exp)|
+              units[dim] = [unit, exp/2]
+            end
+            Measure[::Math.sqrt(x.magnitude), units]
+          else
+            raise ArgumentError, "Invalid dimensiones for sqrt argument #{y}"
+          end
+        end
+      else
+        ::Math.sqrt(x)
+      end
+    end
+
   end
 
 end # Units

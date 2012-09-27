@@ -262,6 +262,7 @@ module Units
   def self.with_constants(*constants, &blk)
     m = Module.new
     m.extend Units::System
+    m.extend Units::Math
     cap_constants = []
     constants.each do |const|
       m.instance_eval do

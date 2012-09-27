@@ -45,4 +45,3 @@ module Units
 end # Units
 
 require 'units/definitions'
-require 'units/constants'

@@ -26,6 +26,7 @@ class TestConstants < Test::Unit::TestCase
     assert_equal 299792458, Units.with_constants(:c){c}.magnitude
     assert_equal 299792458*6.67300E-11, Units.with_constants(:c,:G){G*c}.magnitude
     assert_nil Units.with_constants(:c){c/m}.units[:length]
+    assert_in_delta 1.782661844855044e-27, Units.with_constants(:c){1*GeV/c**2}.to(:kg).magnitude, Float::EPSILON
   end
 
   should "define new constants" do
