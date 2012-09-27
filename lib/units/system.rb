@@ -265,8 +265,10 @@ module Units
     cap_constants = []
     constants.each do |const|
       m.instance_eval do
-        # TODO: make Ruby 1.8 compatible
-        define_singleton_method(const){Units.constant(const)}
+        # Ruby 1.9.1 allows this nicer definition:
+        #   define_singleton_method(const){Units.constant(const)}
+        eigenclass = class<<self; self; end
+        eigenclass.instance_eval{define_method(const){Units.constant(const)}}
         name_initial = const.to_s[0,1]
         if name_initial==name_initial.upcase && name_initial!=name_initial.downcase
           cap_constants << const
