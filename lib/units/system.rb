@@ -232,5 +232,59 @@ module Units
     u_descr
   end
 
+  ConstantDefinition = Struct.new(:symbol, :description, :value)
+  CONSTANTS = {}
+  module Const
+    def self.define(name, description, value)
+      symbol = name.to_sym
+      cd = ConstantDefinition.new(symbol, description, value)
+      CONSTANTS[symbol] = cd
+      class_eval do
+        # Ruby 1.9.1 allows this nicer definition:
+        #   define_singleton_method name do
+        #     value
+        #   end
+        eigenclass = class<<self; self; end
+        eigenclass.instance_eval{define_method(name){value}}
+      end
+    end
+  end
+
+  def self.constant(symbol, description=nil, value=nil)
+    if description.nil? && value.nil?
+      c = CONSTANTS[symbol]
+      c && c.value
+    else
+      Const.define symbol, description, value
+    end
+  end
+
+  def self.with_constants(*constants, &blk)
+    if false
+      constants.each do |const|
+        blk.binding.eval "#{const}=Units::Const.#{const}"
+      end
+      # Nice try! but binding eval cannot define new variables, only alter existing ones
+      Units::System.class_eval(&blk)
+    else
+      m = Module.new
+      m.extend Units::System
+      cap_constants = []
+      constants.each do |const|
+        m.instance_eval do
+          # TODO: make Ruby 1.8 compatible
+          define_singleton_method(const){Units.constant(const)}
+          name_initial = const.to_s[0,1]
+          if name_initial==name_initial.upcase && name_initial!=name_initial.downcase
+            cap_constants << const
+          end
+        end
+      end
+      UseBlocks.with_constants(*cap_constants) do
+        m.instance_eval &blk
+      end
+    end
+  end
+
 end # Units
 

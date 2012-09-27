@@ -13,15 +13,31 @@ module Units
   # It is not needed in Ruby 1.9.1 due to they way constant look-up is done in that version,
   # but Ruby 1.9.2 has changed that an requires this again.
   module UseBlocks
+    @@constants = nil # an instance variable would not work here because const_missing is executed on other modules (which include this one)
     def self.append_features(target)
       def target.const_missing(name)
         begin
-          Units.Measure(name)
+          result = @@constants[name.to_sym] if @@constants
+          result || Units.Measure(name)
         rescue ArgumentError
           super
         end
       end
     end
+
+    def self.with_constants(*consts)
+      prev = @@constants
+      # @@constants = consts.map_hash{|c| Units.constant(c)}
+      @@constants = {}
+      consts.each do |c|
+        c = c.to_sym
+        @@constants[c] = Units.constant(c)
+      end
+      result = yield
+      @@constants = prev
+      result
+    end
+
   end
 
   include UseBlocks
@@ -29,3 +45,4 @@ module Units
 end # Units
 
 require 'units/definitions'
+require 'units/constants'
