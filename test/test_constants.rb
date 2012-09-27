@@ -25,6 +25,7 @@ class TestConstants < Test::Unit::TestCase
   should "allow use of local unqualified declared constants" do
     assert_equal 299792458, Units.with_constants(:c){c}.magnitude
     assert_equal 299792458*6.67300E-11, Units.with_constants(:c,:G){G*c}.magnitude
+    assert_nil Units.with_constants(:c){c/m}.units[:length]
   end
 
   should "define new constants" do
