@@ -132,7 +132,8 @@ class TestUnitsSystem < Test::Unit::TestCase
   should "render valid code when inspecting measures" do
     assert_equal Units.u{m}, eval(Units.u{m}.inspect)
     assert_equal Units.u{3*m/s}, eval(Units.u{3*m/s}.inspect)
-    assert_equal Units.u{3*m/s+2*km/h}, eval(Units.u{3*m/s+2*km/h}.inspect)
+    assert_in_delta Units.u{3*m/s+2*km/h}.magnitude, eval(Units.u{3*m/s+2*km/h}.inspect).magnitude, 1E-12
+    assert_equal Units.u{3*m/s+2*km/h}.units, eval(Units.u{3*m/s+2*km/h}.inspect).units
   end
 
   should "allow arithmetic between measures and text" do
@@ -146,7 +147,7 @@ class TestUnitsSystem < Test::Unit::TestCase
     assert_equal "1.0 m", Units.u{m}.abr
     assert_equal "3.0 m", Units.u{3*m}.abr
     assert_equal "3.0 m/s", Units.u{3*m/s}.abr
-    assert_equal "3.5555555555555554 m/s", Units.u{3*m/s + 2*km/h}.abr
+    assert_match /\A3\.555555555555\d+ m\/s\Z/, Units.u{3*m/s + 2*km/h}.abr
     assert_equal "1,5 m/s", Units.units{3*m/(2*s)}.abr{|v| v.to_s.tr('.',',') }
   end
 
