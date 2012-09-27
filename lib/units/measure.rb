@@ -45,8 +45,13 @@ module Units
       end
     end
 
-    include ModalSupport::StateEquivalent
+    include ModalSupport::StateEquivalent    # used for hash, eql? and ===
     include ModalSupport::BracketConstructor
+
+    # Numeric equivalence (eql? checks for same value & units, and is consistent with hash)
+    def ==(other)
+      self.base.to_si.eql? other.base.to_si
+    end
 
     attr_reader :magnitude, :units
 

@@ -52,6 +52,8 @@ module Units
   define :Sv,  'sievert',   :equivalent_dose,      u{J/kg}
   define :kat, 'katal',     :catalytic_activity,   u{mol/s}
 
+  define :ohm, 'ohm', u{Ω}
+
   # Other units
 
   define :min,  'minute', 60, :s
