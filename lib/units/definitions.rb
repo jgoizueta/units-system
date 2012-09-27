@@ -78,7 +78,7 @@ module Units
   define :arcmin, 'arc-minute', 1, :′
   define :arcsec, 'arc-second', 1, :″
 
-  constant :g0, 'standard gravity', u{9.80665*m/s**2}
+  constant :g0, 'standard gravity', u{9.806_65*m/s**2}
 
   define :bar,  'bar',                    1E5, :Pa
   define :atm,  'atmosphere',             101325.0, :Pa
@@ -98,12 +98,26 @@ module Units
   define :psi, 'pounds-force per square inch', u{lbf/self.in**2}
 
   constant :pi, 'Pi', ::Math::PI
-  constant :c, 'speed of light',  u{ 299792458*m/s }
-  constant :G, 'gravitational constant', u{ 6.67300E-11*m**3/kg/s**2 }
-  constant :h, 'Planck constant', u{ 6.62606957E-34*J*s }
-  constant :hbar, 'Dirac constant', u{Const.h/(2*Const.pi)}
-  constant :electron_charge, 'electron\'s charge', u{1.602176565E-19*C}
 
-  define :eV,  'electron volt', u{Const.electron_charge*V}
+  # Constants (CODATA 2010 recommended values)
+  constant :c,    'speed of light',          u{ 299_792_458*m/s }
+  constant :h,    'Planck constant',         u{ 6.626_069_57E-34*J*s }
+  constant :hbar, 'Dirac constant',          u{Const.h/(2*Const.pi)}
+  constant :ħ,    'Dirac constant',          Const.hbar
+  constant :μ0,   'magnetic constant',       u{4*Const.pi*1E-7*N/A**2}
+  constant :ϵ0,   'electric constant',       1/Const.μ0/Const.c**2
+  constant :G,    'gravitational constant',  u{ 6.673_84E-11*m**3/kg/s**2 }
+  constant :e,    'elementary charge',       u{1.602_176_565E-19*C}
+  constant :me,   'electron mass',           u{9.109_382_91E-31*kg}
+  constant :mp,   'proton mass',             u{1.672_621_777E-27*kg}
+  constant :α,    'fine-structure constant', with_constants(:e, :pi, :ϵ0, :ħ, :c){e**2/(4*pi*ϵ0*ħ*c)}
+  constant :R∞,   'Rydberg constant',        with_constants(:α, :me, :c, :h){α**2*me*c/2/h}
+  constant :NA,   'Avogadro constant',       u{6.022_141_29E22*mol}
+  constant :F,    'Faraday constant',        Const.NA*Const.e
+  constant :R,    'molar gas constant',      u{8.314_4621*J/mol/K}
+  constant :k,    'Boltzmann constant',      Const.R/Const.NA
+
+  define :eV,     'electron volt',           u{Const.e*V}
+  define :u,      'atomic mass unit',        u{1.660_538_921E-27*kg}
 
 end # Units
