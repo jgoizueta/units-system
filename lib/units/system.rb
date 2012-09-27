@@ -260,31 +260,22 @@ module Units
   end
 
   def self.with_constants(*constants, &blk)
-    if false
-      constants.each do |const|
-        blk.binding.eval "#{const}=Units::Const.#{const}"
-      end
-      # Nice try! but binding eval cannot define new variables, only alter existing ones
-      Units::System.class_eval(&blk)
-    else
-      m = Module.new
-      m.extend Units::System
-      cap_constants = []
-      constants.each do |const|
-        m.instance_eval do
-          # TODO: make Ruby 1.8 compatible
-          define_singleton_method(const){Units.constant(const)}
-          name_initial = const.to_s[0,1]
-          if name_initial==name_initial.upcase && name_initial!=name_initial.downcase
-            cap_constants << const
-          end
+    m = Module.new
+    m.extend Units::System
+    cap_constants = []
+    constants.each do |const|
+      m.instance_eval do
+        # TODO: make Ruby 1.8 compatible
+        define_singleton_method(const){Units.constant(const)}
+        name_initial = const.to_s[0,1]
+        if name_initial==name_initial.upcase && name_initial!=name_initial.downcase
+          cap_constants << const
         end
       end
-      UseBlocks.with_constants(*cap_constants) do
-        m.instance_eval &blk
-      end
+    end
+    UseBlocks.with_constants(*cap_constants) do
+      m.instance_eval &blk
     end
   end
 
 end # Units
-
